@@ -248,12 +248,12 @@ var in1,in2,in3,in4,in5,in6;
 var chainx1,chainy1,chainx2,chainy2,chainx3,chainy3;
 var chainxx1,chainyy1,chainxx2,chainyy2,chainxx3,chainyy3;
 
-	in1 = PitchShift.ar(PlayBuf.ar(1,~l1.bufnum,BufRateScale.kr(~l1.bufnum), loop: 0, doneAction:2),0.2,1);
-	in2 = PitchShift.ar(PlayBuf.ar(1,~r1.bufnum,BufRateScale.kr(~r1.bufnum), loop: 0, doneAction:2),0.2,1);
-	in3 = PitchShift.ar(PlayBuf.ar(1,~l2.bufnum,BufRateScale.kr(~l2.bufnum), loop: 0, doneAction:0),0.2,3/2,mul:2/3);
-	in4 = PitchShift.ar(PlayBuf.ar(1,~r2.bufnum,BufRateScale.kr(~r2.bufnum), loop: 0, doneAction:0),0.2,3/2,mul:2/3);
-	in5 = PitchShift.ar(PlayBuf.ar(1,~l3.bufnum,BufRateScale.kr(~l3.bufnum), loop: 0, doneAction:0),0.2,2,mul:1/2);
-	in6 = PitchShift.ar(PlayBuf.ar(1,~r3.bufnum,BufRateScale.kr(~r3.bufnum), loop: 0, doneAction:0),0.2,2,mul:1/2);
+	in1 = PlayBuf.ar(1, ~l1.bufnum, BufRateScale.kr(~l1.bufnum), loop: 0, doneAction:2);
+	in2 = PlayBuf.ar(1, ~r1.bufnum, BufRateScale.kr(~r1.bufnum), loop: 0, doneAction:2);
+	in3 = PlayBuf.ar(1, ~l2.bufnum, BufRateScale.kr(~l2.bufnum), loop: 0, doneAction:0);
+	in4 = PlayBuf.ar(1, ~r2.bufnum, BufRateScale.kr(~r2.bufnum), loop: 0, doneAction:0);
+	in5 = PlayBuf.ar(1, ~l3.bufnum, BufRateScale.kr(~l3.bufnum), loop: 0, doneAction:0);
+	in6 = PlayBuf.ar(1, ~r3.bufnum, BufRateScale.kr(~r3.bufnum), loop: 0, doneAction:0);
 
 	chainx1 = FFT(LocalBuf(frames), in1);
 	chainy1 = FFT(LocalBuf(frames), in2);
@@ -312,4 +312,3 @@ pl=pl+1;
 )
 
 Synth.new(\buf3d);
-//s.record;
