@@ -237,23 +237,23 @@ var phase1,phase2,angle1=0,angle2=0,m=3,pl1=0,pl2=0;
 
 //////////////synth
 (
+SynthDef.new(\buf3d,
 {
 var signal1,signal2,signal3,signal4,signal5,signal6;
-var pl=0,b=0,frames=(1024*2);
+var pl=0,b=0,frames=(1024*1);
 var mg1,mg2,mg3;
 var pos1,pos2,pos3,pos4,pos5,pos6;
-var phase1,phase2,phase3,phase4,phase5,phase6;
 var ph1,ph2,ph3,ph4,ph5,ph6;
 var in1,in2,in3,in4,in5,in6;
 var chainx1,chainy1,chainx2,chainy2,chainx3,chainy3;
 var chainxx1,chainyy1,chainxx2,chainyy2,chainxx3,chainyy3;
 
-	in1 = PlayBuf.ar(1, ~l1.bufnum, BufRateScale.kr(~l1.bufnum), loop: 0, doneAction:2);
-	in2 = PlayBuf.ar(1, ~r1.bufnum, BufRateScale.kr(~r1.bufnum), loop: 0, doneAction:2);
-	in3 = PlayBuf.ar(1, ~l2.bufnum, BufRateScale.kr(~l2.bufnum), loop: 0, doneAction:0);
-	in4 = PlayBuf.ar(1, ~r2.bufnum, BufRateScale.kr(~r2.bufnum), loop: 0, doneAction:0);
-	in5 = PlayBuf.ar(1, ~l3.bufnum, BufRateScale.kr(~l3.bufnum), loop: 0, doneAction:0);
-	in6 = PlayBuf.ar(1, ~r3.bufnum, BufRateScale.kr(~r3.bufnum), loop: 0, doneAction:0);
+	in1 = PitchShift.ar(PlayBuf.ar(1,~l1.bufnum,BufRateScale.kr(~l1.bufnum), loop: 0, doneAction:2),0.2,1);
+	in2 = PitchShift.ar(PlayBuf.ar(1,~r1.bufnum,BufRateScale.kr(~r1.bufnum), loop: 0, doneAction:2),0.2,1);
+	in3 = PitchShift.ar(PlayBuf.ar(1,~l2.bufnum,BufRateScale.kr(~l2.bufnum), loop: 0, doneAction:0),0.2,3/2,mul:2/3);
+	in4 = PitchShift.ar(PlayBuf.ar(1,~r2.bufnum,BufRateScale.kr(~r2.bufnum), loop: 0, doneAction:0),0.2,3/2,mul:2/3);
+	in5 = PitchShift.ar(PlayBuf.ar(1,~l3.bufnum,BufRateScale.kr(~l3.bufnum), loop: 0, doneAction:0),0.2,2,mul:1/2);
+	in6 = PitchShift.ar(PlayBuf.ar(1,~r3.bufnum,BufRateScale.kr(~r3.bufnum), loop: 0, doneAction:0),0.2,2,mul:1/2);
 
 	chainx1 = FFT(LocalBuf(frames), in1);
 	chainy1 = FFT(LocalBuf(frames), in2);
@@ -262,22 +262,18 @@ var chainxx1,chainyy1,chainxx2,chainyy2,chainxx3,chainyy3;
 	chainx3 = FFT(LocalBuf(frames), in5);
 	chainy3 = FFT(LocalBuf(frames), in6);
 
-360.do{
+180.do{
 
 		pos1=~posL1.[pl]/(2.sqrt);
 		pos2=~posR1.[pl]/(2.sqrt);
 		pos3=~posL2.[pl]/(2.sqrt);
-		pos4=~posR2.[pl]/(2.sqrt)
+		pos4=~posR2.[pl]/(2.sqrt);
 		pos5=~posL3.[pl]/(2.sqrt);
-		pos6=~posR3.[pl]/(2.sqrt)
-		//phase1=~phase1.[pl];
-		//phase2=~phase2.[pl];
+		pos6=~posR3.[pl]/(2.sqrt);
+
 		mg1=Complex(~magL1.[pl],~magR1.[pl]);
 		mg2=Complex(~magL2.[pl],~magR2.[pl]);
 		mg3=Complex(~magL3.[pl],~magR3.[pl]);
-
-		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
-		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
         ph1=exp(Complex(0,1)*(2pi*mg1.real).mod(2pi)).theta;
 		ph2=exp(Complex(0,1)*(2pi*mg1.imag).mod(2pi)).theta;
@@ -312,6 +308,8 @@ pl=pl+1;
 		Out.ar(0,signal6);
 
 }
-}.play;
-s.record;
+}).add;
 )
+
+Synth.new(\buf3d);
+//s.record;
