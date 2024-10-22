@@ -272,9 +272,9 @@ var chainxx1,chainyy1,chainxx2,chainyy2,chainxx3,chainyy3;
 		pos6=~posR3.[pl]/(2.sqrt)
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-		mg1=Complex(~magL1.[pl]/(2.sqrt),~magR1.[pl]/(2.sqrt));
-		mg2=Complex(~magL2.[pl]/(2.sqrt),~magR2.[pl]/(2.sqrt));
-		mg3=Complex(~magL3.[pl]/(2.sqrt),~magR3.[pl]/(2.sqrt));
+		mg1=Complex(~magL1.[pl],~magR1.[pl]);
+		mg2=Complex(~magL2.[pl],~magR2.[pl]);
+		mg3=Complex(~magL3.[pl],~magR3.[pl]);
 
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
@@ -286,20 +286,30 @@ var chainxx1,chainyy1,chainxx2,chainyy2,chainxx3,chainyy3;
 		ph5=exp(Complex(0,1)*(2pi*mg3.real).mod(2pi)).theta;
 		ph6=exp(Complex(0,1)*(2pi*mg3.imag).mod(2pi)).theta;
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx1 = chainx1.pvcollect(frames, {|mag, phase, index| [mag*(mg1.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1).mod(2pi)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy1 = chainy1.pvcollect(frames, {|mag, phase, index| [mag*(mg1.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2).mod(2pi)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+
+chainxx2= chainx2.pvcollect(frames, {|mag, phase, index| [mag*(mg2.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph3).mod(2pi)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy2 = chainy2.pvcollect(frames, {|mag, phase, index| [mag*(mg2.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph4).mod(2pi)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+
+chainxx3 = chainx3.pvcollect(frames, {|mag, phase, index| [mag*(mg3.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph5).mod(2pi)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy3 = chainy3.pvcollect(frames, {|mag, phase, index| [mag*(mg3.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph6).mod(2pi)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(chainxx),pos1);
-		signal2=Pan2.ar(IFFT(chainyy),pos2);
-		signal3=Pan2.ar(IFFT(chainyy),pos1);
-		signal4=Pan2.ar(IFFT(chainyy),pos2);
-		signal5=Pan2.ar(IFFT(chainyy),pos1);
-		signal6=Pan2.ar(IFFT(chainyy),pos2);
+		signal1=Pan2.ar(IFFT(chainxx1),pos1);
+		signal2=Pan2.ar(IFFT(chainyy1),pos2);
+		signal3=Pan2.ar(IFFT(chainxx2),pos3);
+		signal4=Pan2.ar(IFFT(chainyy2),pos4);
+		signal5=Pan2.ar(IFFT(chainxx3),pos5);
+		signal6=Pan2.ar(IFFT(chainyy3),pos6);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
 		Out.ar(0,signal2);
+		Out.ar(0,signal3);
+		Out.ar(0,signal4);
+		Out.ar(0,signal5);
+		Out.ar(0,signal6);
 
 }
 }.play;
