@@ -312,3 +312,4 @@ pl=pl+1;
 )
 
 Synth.new(\buf3d);
+s.record
